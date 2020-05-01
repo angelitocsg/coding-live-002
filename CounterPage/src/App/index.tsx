@@ -12,14 +12,15 @@ const App = () => {
   const [counters, setCounters] = useState<ICounter>({});
   const [hubConnection, setHubConnection] = useState<signalR.HubConnection>();
   const [hubStarted, setHubStarted] = useState(false);
+  const hubUrl = process.env.REACT_APP_HUB_URL;
 
   useEffect(() => {
-    setHubConnection(
-      new signalR.HubConnectionBuilder()
-        .withUrl("https://localhost:5001/clickcounter")
-        .build()
-    );
-  }, []);
+    if (hubUrl) {
+      setHubConnection(
+        new signalR.HubConnectionBuilder().withUrl(hubUrl).build()
+      );
+    }
+  }, [hubUrl]);
 
   useEffect(() => {
     if (!!hubConnection && !hubStarted) {
