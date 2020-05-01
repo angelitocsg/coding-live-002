@@ -1,10 +1,13 @@
 using System;
+using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using MyApi.Hubs;
 
 namespace MyApi
@@ -45,6 +48,7 @@ namespace MyApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
             app.UseCors("CorsPolicy");
 
             app.UseHttpsRedirection();
@@ -53,24 +57,17 @@ namespace MyApi
 
             app.UseAuthorization();
 
+            app.UseDefaultFiles();
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")),
+            });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<ClickCounterHub>("clickcounter");
-            });
-
-            hostApplicationLifetime.ApplicationStarted.Register(() =>
-            {
-                var serviceProvider = app.ApplicationServices;
-                var clickCounter = (IHubContext<ClickCounterHub>)serviceProvider.GetService(typeof(IHubContext<ClickCounterHub>));
-
-                var timer = new System.Timers.Timer(1000);
-                timer.Enabled = true;
-                timer.Elapsed += delegate (object sender, System.Timers.ElapsedEventArgs e)
-                {
-                    clickCounter.Clients.All.SendAsync("sendUptime", DateTime.Now.ToString("dddd d MMMM yyyy HH:mm:ss"));
-                };
-                timer.Start();
             });
         }
     }
