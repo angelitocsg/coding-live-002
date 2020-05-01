@@ -1,0 +1,73 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  padding: 15px;
+  background-color: black;
+}
+
+#root {
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.box-container {
+  justify-content: center;
+}
+
+.box-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  margin: 15px;
+}
+
+.box-item i {
+  font-size: 80px;
+  padding: 8px;
+}
+.box-item i:active {
+  font-size: 96px;
+  padding: 0px;
+}
+
+.box-item .fa-thumbs-up {
+  color: #3333ff;
+}
+.box-item .fa-heart {
+  color: #ff3333;
+}
+.box-item .fa-laugh {
+  color: #ffff00;
+}
+.box-item .fa-grin-tongue-wink {
+  color: #ffff00;
+}
+
+.box-item .counter-like {
+  color: white;
+  font-weight: bold;
+  padding-top: 20px;
+  font-size: 30px;
+}
+
+@media (min-width: 768px) {
+  .hit {
+    font: bold 50px Arial, Tahoma, Verdana;
+  }
+}
+
+.hit {
+  display: block;
+  color: white;
+  font: bold 30px Arial, Tahoma, Verdana;
+  text-align: center;
+  padding: 15px 0;
+}
